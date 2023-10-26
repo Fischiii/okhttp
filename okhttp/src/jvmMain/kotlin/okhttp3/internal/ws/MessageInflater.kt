@@ -46,9 +46,10 @@ class MessageInflater(
 
     // We cannot read all, as the source does not close.
     // Instead, we ensure that all bytes from source have been processed by inflater.
+    var inflatedBytes = 0L
     do {
-      inflaterSource.readOrInflate(buffer, Long.MAX_VALUE)
-    } while (inflater.bytesRead < totalBytesToRead)
+      inflatedBytes = inflaterSource.readOrInflate(buffer, Long.MAX_VALUE)
+    } while (inflater.bytesRead < totalBytesToRead && inflatedBytes > 0)
   }
 
   @Throws(IOException::class)
